@@ -1,0 +1,18 @@
+{
+  "name": "com.mgrosser3.toolbox",
+  "version": "0.0.0",
+  "displayName": "com.mgrosser3.toolbox",
+  "description": "A collection of reusable components and features.",
+  "unity": "2021.2",
+  "unityRelease": "10f1",
+  "author": {
+    "name": "mgrosser3"
+  },
+  "samples": [
+    {
+      "displayName": "Stereo 3D",
+      "description": "Stereo Rendering Example",
+      "path":  "Samples~/Stereo3D"
+    }
+  ]
+}
