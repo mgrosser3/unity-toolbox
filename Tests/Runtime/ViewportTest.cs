@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace mgrosser3
 {
-    public class ViewportProxyTest
+    public class ViewportTest
     {
         [Test]
         public void DefaultSizeTest()
