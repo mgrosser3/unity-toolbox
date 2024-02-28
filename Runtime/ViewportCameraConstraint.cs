@@ -7,18 +7,9 @@ namespace mgrosser3
     [AddComponentMenu("mgrosser3/Viewport Camera Constraint")]
     public class ViewportCameraConstraint : MonoBehaviour
     {
-        [SerializeField]
-        private ViewportProxy viewport = null;
-
         private new Camera camera;
 
-        public ViewportProxy Viewport
-        {
-            get
-            {
-                return this.viewport;
-            }
-        }
+        public Viewport viewport = new Viewport();
 
         public Camera Camera
         {
@@ -39,7 +30,8 @@ namespace mgrosser3
             if (this.viewport == null || this.camera == null)
                 return;
 
-            var position = this.transform.worldToLocalMatrix * (this.transform.position - this.viewport.transform.position);
+            // Viewport position in camera coordinates
+            Vector3 position = this.transform.worldToLocalMatrix * (this.transform.position - this.viewport.Position);
 
             if (position.z >= 0f)
             {
@@ -54,6 +46,9 @@ namespace mgrosser3
             // matrix becomes invalid.
             if (position.z >= 0.0f)
                 return;
+
+            // Set aspect ratio of the viewport
+            viewport.AspectRatio = new Vector2(this.camera.pixelWidth, this.camera.pixelHeight);
 
             // Adjust projection matrix
             // see https://docs.unity3d.com/Manual/ObliqueFrustum.html
@@ -76,8 +71,26 @@ namespace mgrosser3
             this.camera.projectionMatrix = mat;
 
             // Reset the vertical field of view
-            this.transform.rotation = this.viewport.transform.rotation;
+            this.transform.rotation = this.viewport.Rotation;
             this.camera.fieldOfView = fovV;
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (this.enabled == false)
+                return;
+
+            var positions = new Vector3[] {
+                this.viewport.Position + this.viewport.Rotation * new Vector3(-0.5f * this.viewport.Width, -0.5f * this.viewport.Height),
+                this.viewport.Position + this.viewport.Rotation * new Vector3(-0.5f * this.viewport.Width, +0.5f * this.viewport.Height),
+                this.viewport.Position + this.viewport.Rotation * new Vector3(+0.5f * this.viewport.Width, +0.5f * this.viewport.Height),
+                this.viewport.Position + this.viewport.Rotation * new Vector3(+0.5f * this.viewport.Width, -0.5f * this.viewport.Height)
+            };
+
+            Gizmos.DrawLine(positions[0], positions[1]);
+            Gizmos.DrawLine(positions[1], positions[2]);
+            Gizmos.DrawLine(positions[2], positions[3]);
+            Gizmos.DrawLine(positions[3], positions[0]);
         }
     }
 }

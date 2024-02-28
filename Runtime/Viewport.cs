@@ -1,25 +1,27 @@
+using System;
 using UnityEngine;
 
 namespace mgrosser3
 {
 
-    [AddComponentMenu("mgrosser3/Viewport (Proxy)")]
-    public class ViewportProxy : MonoBehaviour
+    [Serializable]
+    public class Viewport
     {
-
         /// <summary>
         /// If possible, use the public property Size instead of
         /// the internal state of the size.
         /// </summary>
         [SerializeField]
-        private float size = 81.28f; // default is 32''
+        private float size = 0.8128f; // default is 32''
 
         /// <summary>
         /// If possible, use the public property AspectRatio instead of
         /// the internal state of the aspect ratio.
         /// </summary>
-        [SerializeField]
         private Vector2 aspectRatio = new Vector2(16, 9);
+
+        [SerializeField]
+        private Transform target = null;
 
         public Vector2 AspectRatio
         {
@@ -59,7 +61,7 @@ namespace mgrosser3
             {
                 // Wikipedia: https://de.wikipedia.org/wiki/Bildschirmdiagonale#Seitenl%C3%A4ngen_und_Fl%C3%A4che
                 float t = Mathf.Sqrt(this.AspectRatio.x * this.AspectRatio.x + this.AspectRatio.y * this.AspectRatio.y);
-                return 0.01f * (this.AspectRatio.x / t) * this.size;
+                return (this.AspectRatio.x / t) * this.size;
             }
         }
 
@@ -69,33 +71,25 @@ namespace mgrosser3
             {
                 // Wikipedia: https://de.wikipedia.org/wiki/Bildschirmdiagonale#Seitenl%C3%A4ngen_und_Fl%C3%A4che
                 float t = Mathf.Sqrt(this.AspectRatio.x * this.AspectRatio.x + this.AspectRatio.y * this.AspectRatio.y);
-                return 0.01f * (this.AspectRatio.y / t) * this.size;
+                return (this.AspectRatio.y / t) * this.size;
             }
         }
 
-        private void Start()
+        public Vector3 Position
         {
-            ;
+            get
+            {
+                return this.target != null ? this.target.position : Vector3.zero;
+            }
         }
 
-        private void OnDrawGizmos()
+        public Quaternion Rotation
         {
-            if (this.enabled == false)
-                return;
-
-            var positions = new Vector3[] {
-                this.transform.position + this.transform.rotation * new Vector3(-0.5f * this.Width, -0.5f * this.Height),
-                this.transform.position + this.transform.rotation * new Vector3(-0.5f * this.Width, +0.5f * this.Height),
-                this.transform.position + this.transform.rotation * new Vector3(+0.5f * this.Width, +0.5f * this.Height),
-                this.transform.position + this.transform.rotation * new Vector3(+0.5f * this.Width, -0.5f * this.Height)
-            };
-
-            Gizmos.DrawLine(positions[0], positions[1]);
-            Gizmos.DrawLine(positions[1], positions[2]);
-            Gizmos.DrawLine(positions[2], positions[3]);
-            Gizmos.DrawLine(positions[3], positions[0]);
+            get
+            {
+                return this.target != null ? this.target.rotation : Quaternion.identity;
+            }
         }
-
     }
 
 }
