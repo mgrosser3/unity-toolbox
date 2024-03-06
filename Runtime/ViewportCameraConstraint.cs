@@ -9,7 +9,7 @@ namespace mgrosser3
     {
         private new Camera camera;
 
-        public Viewport viewport = new Viewport();
+        public Viewport Viewport = new Viewport();
 
         public Camera Camera
         {
@@ -27,11 +27,11 @@ namespace mgrosser3
 
         private void LateUpdate()
         {
-            if (this.viewport == null || this.camera == null)
+            if (this.Viewport == null || this.camera == null)
                 return;
 
             // Viewport position in camera coordinates
-            Vector3 position = this.transform.worldToLocalMatrix * (this.transform.position - this.viewport.Position);
+            Vector3 position = this.transform.worldToLocalMatrix * (this.transform.position - this.Viewport.Position);
 
             if (position.z >= 0f)
             {
@@ -48,13 +48,13 @@ namespace mgrosser3
                 return;
 
             // Set aspect ratio of the viewport
-            viewport.AspectRatio = new Vector2(this.camera.pixelWidth, this.camera.pixelHeight);
+            Viewport.AspectRatio = new Vector2(this.camera.pixelWidth, this.camera.pixelHeight);
 
             // Adjust projection matrix
             // see https://docs.unity3d.com/Manual/ObliqueFrustum.html
             var aspect = this.camera.aspect;
 
-            var fovV = 2.0f * Mathf.Rad2Deg * Mathf.Atan2(this.viewport.Height, 2.0f * Mathf.Abs(position.z));
+            var fovV = 2.0f * Mathf.Rad2Deg * Mathf.Atan2(this.Viewport.Height, 2.0f * Mathf.Abs(position.z));
             var fovH = Camera.VerticalToHorizontalFieldOfView(fovV, aspect);
 
             var horizontalShift = -position.x / (-position.z * Mathf.Tan(Mathf.Deg2Rad * 0.5f * fovH));
@@ -71,7 +71,7 @@ namespace mgrosser3
             this.camera.projectionMatrix = mat;
 
             // Reset the vertical field of view
-            this.transform.rotation = this.viewport.Rotation;
+            this.transform.rotation = this.Viewport.Rotation;
             this.camera.fieldOfView = fovV;
         }
 
@@ -81,10 +81,10 @@ namespace mgrosser3
                 return;
 
             var positions = new Vector3[] {
-                this.viewport.Position + this.viewport.Rotation * new Vector3(-0.5f * this.viewport.Width, -0.5f * this.viewport.Height),
-                this.viewport.Position + this.viewport.Rotation * new Vector3(-0.5f * this.viewport.Width, +0.5f * this.viewport.Height),
-                this.viewport.Position + this.viewport.Rotation * new Vector3(+0.5f * this.viewport.Width, +0.5f * this.viewport.Height),
-                this.viewport.Position + this.viewport.Rotation * new Vector3(+0.5f * this.viewport.Width, -0.5f * this.viewport.Height)
+                this.Viewport.Position + this.Viewport.Rotation * new Vector3(-0.5f * this.Viewport.Width, -0.5f * this.Viewport.Height),
+                this.Viewport.Position + this.Viewport.Rotation * new Vector3(-0.5f * this.Viewport.Width, +0.5f * this.Viewport.Height),
+                this.Viewport.Position + this.Viewport.Rotation * new Vector3(+0.5f * this.Viewport.Width, +0.5f * this.Viewport.Height),
+                this.Viewport.Position + this.Viewport.Rotation * new Vector3(+0.5f * this.Viewport.Width, -0.5f * this.Viewport.Height)
             };
 
             Gizmos.DrawLine(positions[0], positions[1]);

@@ -23,6 +23,19 @@ namespace mgrosser3
         [SerializeField]
         private Transform target = null;
 
+        public Transform Target
+        {
+            get
+            {
+                return this.target;
+            }
+
+            set
+            {
+                this.target = value;
+            }
+        }
+
         public Vector2 AspectRatio
         {
             get { return this.aspectRatio; }
