@@ -31,12 +31,20 @@ namespace mgrosser3
         [Tooltip("Background color of the cameras.")]
         private Color background;
 
+        [SerializeField]
+        [Tooltip("Near plane of the cameras.")]
+        private float nearPlane;
+
+        [SerializeField]
+        [Tooltip("Far plane of the cameras.")]
+        private float farPlane;
+
+        /// <summary>
+        /// Clear flag of the cameras.
+        /// </summary>
         public CameraClearFlags ClearFlag
         {
-            get
-            {
-                return this.clearFlag;
-            }
+            get { return this.clearFlag; }
 
             set
             {
@@ -63,10 +71,7 @@ namespace mgrosser3
         /// </summary>
         public Color Background
         {
-            get
-            {
-                return this.background;
-            }
+            get { return this.background; }
 
             set
             {
@@ -89,12 +94,75 @@ namespace mgrosser3
         }
 
         /// <summary>
+        /// Near plane value of the cameras.
+        /// Only values greater than zero are permitted.
+        /// </summary>
+        public float NearPlane
+        {
+            get { return this.nearPlane; }
+
+            set
+            {
+                if (value <= 0f)
+                    return;
+
+                this.nearPlane = value;
+
+                System.Action<GameObject> SetCameraNearPlane = (GameObject obj) =>
+                {
+                    if (obj != null)
+                    {
+
+                        Camera cam = obj.GetComponent<Camera>();
+                        if (cam != null)
+                            cam.nearClipPlane = this.nearPlane;
+                    }
+                };
+
+                SetCameraNearPlane(this.cameraLeft);
+                SetCameraNearPlane(this.cameraRight);
+            }
+        }
+
+        /// <summary>
+        /// Far plane value of the cameras.
+        /// Only values greater than zero are permitted.
+        /// </summary>
+        public float FarPlane
+        {
+            get { return this.farPlane; }
+
+            set
+            {
+                if (value <= 0f)
+                    return;
+
+                this.farPlane = value;
+
+                System.Action<GameObject> SetCameraFarPlane = (GameObject obj) =>
+                {
+                    if (obj != null)
+                    {
+
+                        Camera cam = obj.GetComponent<Camera>();
+                        if (cam != null)
+                            cam.farClipPlane = this.farPlane;
+                    }
+                };
+
+                SetCameraFarPlane(this.cameraLeft);
+                SetCameraFarPlane(this.cameraRight);
+
+            }
+        }
+
+        /// <summary>
         /// Distance between the cameras.
         /// </summary>
         public float InterocularDistance
         {
             get { return this.interocularDistance; }
-            
+
             set
             {
                 if (value < 0f)
@@ -194,6 +262,8 @@ namespace mgrosser3
 
             this.ClearFlag = CameraClearFlags.Color;
             this.Background = new Color32(49, 77, 121, 255);
+            this.NearPlane = 0.3f;
+            this.FarPlane = 1000f;
             this.InterocularDistance = 0.064f;
             this.ConvergencePlaneDistance = 0.8f;
 
@@ -203,6 +273,8 @@ namespace mgrosser3
         {
             this.ClearFlag = this.clearFlag;
             this.Background = this.background;
+            this.NearPlane = this.nearPlane;
+            this.FarPlane = this.farPlane;
 
             if (this.interocularDistance < 0f)
                 this.interocularDistance = 0f;
