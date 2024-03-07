@@ -21,6 +21,8 @@ namespace mgrosser3
         [Tooltip("Distance to the convergance plane.")]
         private float convergencePlaneDistance;
 
+        [Header("Camera Settings")]
+
         [SerializeField]
         [Tooltip("Clear flag of the cameras.")]
         private CameraClearFlags clearFlag;
