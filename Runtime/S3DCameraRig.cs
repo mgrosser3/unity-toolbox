@@ -21,6 +21,71 @@ namespace mgrosser3
         [Tooltip("Distance to the convergance plane.")]
         private float convergencePlaneDistance;
 
+        [SerializeField]
+        [Tooltip("Clear flag of the cameras.")]
+        private CameraClearFlags clearFlag;
+
+        [SerializeField]
+        [Tooltip("Background color of the cameras.")]
+        private Color background;
+
+        public CameraClearFlags ClearFlag
+        {
+            get
+            {
+                return this.clearFlag;
+            }
+
+            set
+            {
+                this.clearFlag = value;
+
+                System.Action<GameObject> SetCameraClearFlag = (GameObject obj) =>
+                {
+                    if (obj != null)
+                    {
+
+                        Camera cam = obj.GetComponent<Camera>();
+                        if (cam != null)
+                            cam.clearFlags = this.clearFlag;
+                    }
+                };
+
+                SetCameraClearFlag(this.cameraLeft);
+                SetCameraClearFlag(this.cameraRight);
+            }
+        }
+
+        /// <summary>
+        /// Background color of the cameras.
+        /// </summary>
+        public Color Background
+        {
+            get
+            {
+                return this.background;
+            }
+
+            set
+            {
+                this.background = value;
+
+                System.Action<GameObject> SetCameraBackground = (GameObject obj) =>
+                {
+                    if (obj != null)
+                    {
+
+                        Camera cam = obj.GetComponent<Camera>();
+                        if (cam != null)
+                            cam.backgroundColor = this.background;
+                    }
+                };
+
+                SetCameraBackground(this.CameraLeft);
+                SetCameraBackground(this.CameraRight);
+            }
+        }
+
         /// <summary>
         /// Distance between the cameras.
         /// </summary>
@@ -125,6 +190,8 @@ namespace mgrosser3
                 this.cameraRight.AddComponent<ViewportCameraConstraint>().Viewport.Target = this.transform;
             }
 
+            this.ClearFlag = CameraClearFlags.Color;
+            this.Background = new Color32(49, 77, 121, 255);
             this.InterocularDistance = 0.064f;
             this.ConvergencePlaneDistance = 0.8f;
 
@@ -132,6 +199,9 @@ namespace mgrosser3
 
         private void OnValidate()
         {
+            this.ClearFlag = this.clearFlag;
+            this.Background = this.background;
+
             if (this.interocularDistance < 0f)
                 this.interocularDistance = 0f;
             this.InterocularDistance = this.interocularDistance;
@@ -150,6 +220,5 @@ namespace mgrosser3
         {
             Setup();
         }
-
     }
 }
