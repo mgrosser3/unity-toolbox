@@ -6,27 +6,24 @@ namespace mgrosser3
     public class S3DCameraRig : MonoBehaviour
     {
         [SerializeField]
+        [Tooltip("Right camera of the rig.")]
         private GameObject cameraLeft = null;
 
-        public GameObject CameraLeft
-        {
-            get { return this.cameraLeft; }
-        }
-
         [SerializeField]
+        [Tooltip("Left camera of the rig.")]
         private GameObject cameraRight = null;
 
-        public GameObject CameraRight
-        {
-            get { return this.cameraRight; }
-        }
+        [SerializeField]
+        [Tooltip("Distance between the cameras.")]
+        private float interocularDistance;
+
+        [SerializeField]
+        [Tooltip("Distance to the convergance plane.")]
+        private float convergencePlaneDistance;
 
         /// <summary>
         /// Distance between the cameras.
         /// </summary>
-        [SerializeField]
-        private float interocularDistance;
-
         public float InterocularDistance
         {
             get { return this.interocularDistance; }
@@ -59,9 +56,6 @@ namespace mgrosser3
         /// <summary>
         /// Distance to the convergance plane.
         /// </summary>
-        [SerializeField]
-        private float convergencePlaneDistance;
-
         public float ConvergencePlaneDistance
         {
             get { return this.convergencePlaneDistance; }
@@ -87,6 +81,22 @@ namespace mgrosser3
                     this.cameraRight.transform.localPosition = p;
                 }
             }
+        }
+
+        /// <summary>
+        /// Right camera of the rig.
+        /// </summary>
+        public GameObject CameraRight
+        {
+            get { return this.cameraRight; }
+        }
+
+        /// <summary>
+        /// Left camera of the rig.
+        /// </summary>
+        public GameObject CameraLeft
+        {
+            get { return this.cameraLeft; }
         }
 
         /// <summary>
@@ -141,6 +151,5 @@ namespace mgrosser3
             Setup();
         }
 
-        
     }
 }
