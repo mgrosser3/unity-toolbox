@@ -1,7 +1,9 @@
 {
     "name": "mgrosser3.Toolbox.Editor",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "GUID:04c87445813307843b719299b9bbbbf6"
+    ],
     "includePlatforms": [
         "Editor"
     ],

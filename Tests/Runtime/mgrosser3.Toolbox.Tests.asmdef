@@ -4,7 +4,7 @@
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "SeeReal.FrameCapturePlugin.Runtime"
+        "mgrosser3.Toolbox"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
